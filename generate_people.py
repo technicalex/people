@@ -4,9 +4,7 @@ import os
 import sys
 from datetime import datetime
 
-def generate_people(constituents, emails, subscriptions, people):
-    print('Generating ' + people + '...')
-    
+def generate_people(constituents, emails, subscriptions, people):    
     # Import relevant data
     df_constituents = pd.read_csv(constituents, index_col=False, usecols=['cons_id', 'source', 'create_dt', 'modified_dt'])
     df_emails = pd.read_csv(emails, index_col=False, usecols=['cons_email_id', 'cons_id', 'is_primary', 'email'])
@@ -22,10 +20,10 @@ def generate_people(constituents, emails, subscriptions, people):
     df_subscriptions = df_subscriptions.astype({'isunsub' : 'Int64'})
 
     # Left join tables to capture all constituents with optional primary email address
-    df_people = pd.merge(left=df_constituents, right=df_emails, how='left', left_on='cons_id', right_on='cons_id')
+    df_people = pd.merge(left=df_constituents, right=df_emails, how='left', on='cons_id')
 
     # Left join tables to add optional subscription data
-    df_people = pd.merge(left=df_people, right=df_subscriptions, how='left', left_on='cons_email_id', right_on='cons_email_id')
+    df_people = pd.merge(left=df_people, right=df_subscriptions, how='left', on='cons_email_id')
 
     # Limit columns to those we care about
     df_people = df_people[['email', 'source', 'isunsub', 'create_dt', 'modified_dt']]
@@ -42,7 +40,6 @@ def generate_people(constituents, emails, subscriptions, people):
     df_people.to_csv(people, index=False)
 
 def generate_acquisition_facts(people, acquisitions):
-    print('Generating ' + acquisitions + '...')
 
     # Get the creation datetime for every record in people.csv
     s_people = pd.read_csv(people, index_col=False, usecols=['created_dt'], squeeze=True)
@@ -72,13 +69,13 @@ if __name__ == '__main__':
 
     # Validate input files exist
     if not os.path.isfile(args.constituents):
-        sys.exit('Error: ' + args.constituents + ' does not exist')
+        sys.exit(f'Error: {args.constituents} does not exist')
         
     if not os.path.isfile(args.emails):
-        sys.exit('Error: ' + args.emails + ' does not exist')
+        sys.exit(f'Error: {args.emails} does not exist')
         
     if not os.path.isfile(args.subscriptions):
-        sys.exit('Error: ' + args.subscriptions + ' does not exist')
+        sys.exit(f'Error: {args.subscriptions} does not exist')
 
     # Generate People File
     generate_people(args.constituents, args.emails, args.subscriptions, args.people)

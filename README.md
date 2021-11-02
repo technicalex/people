@@ -1,5 +1,9 @@
 # People and Acquisition Facts
 
+## About
+
+This application takes constituent data, email data, and subscription data to generate two files: a "people" file containing a subset of data on each constituent from the three source files, and an "acquisition facts" file that aggregates statistics on when people in the dataset were acquired.
+
 ## Setup
 
 This application requires Python 3 and Pandas. Please see [instructions](https://pandas.pydata.org/docs/getting_started/install.html) for Pandas installation. The recommended installation method for Pandas is to install as part of the [Anaconda](https://docs.continuum.io/anaconda/) distribution, which also installs Python. Ensure python has been added to your PATH environment variable, or replace every call to `python` below with the full path to python, e.g. `C:\Users\alexa\anaconda3\python.exe`.
@@ -26,29 +30,26 @@ To get started right away, open a command prompt in the directory containing `ge
 
 ## Usage Examples
 
+These are usage examples only. Absolute file paths will differ on your machine.
+
 Run from a directory containing `generate_people.py` and the input files with their default names (`generate_people.py`, `cons.csv`, `cons_email.csv`, and `cons_email_chapter_subscription.csv`). Output to default files (`people.csv` and `acquisition_facts.csv` in the current directory):
 ```
 python generate_people.py
 ```
 
-Run from a directory containing `generate_people.py` and the input files with their default names. Output people data to `my_people.csv` in the current directory, and acquisition facts to the default destination:
+Run from a directory containing input files with their default names but *not* `generate_people.py`. Output to default files.
 ```
-python generate_people.py -p my_people.csv
+python C:\workspace\people\generate_people.py
 ```
 
-Run from a directory containing `generate_people.py` and the input files with their default names. Output people data to `my_people.csv` and acquisition facts data to `my_acquistion_facts.csv`, both in the current directory:
+Run from a directory containing `generate_people.py` and the input files with their default names. Output to the default file location, but rename people data to `my_people.csv`.
 ```
-python generate_people.py -p my_people.csv -a my_acquisition_facts.csv
+python generate_people.py -p my_people.csv
 ```
 
 Run from a directory containing `generate_people.py` and a sub-directory `input` containing `cons.csv`, `cons_email.csv`, and `cons_email_chapter_subscription.csv`. Output people data and acquisition facts data to a sub-directory `output`. (Note that the `output` directory must already exist.):
 ```
 python generate_people.py -c input\cons.csv -e input\cons_email.csv -s input\cons_email_chapter_subscription.csv -p output\people.csv -a output\acquisition_facts.csv
-```
-
-Run from a directory containing input files with their default names but *not* `generate_people.py`. Output to default files.
-```
-python C:\workspace\people\generate_people.py
 ```
 
 ## Project Assumptions
